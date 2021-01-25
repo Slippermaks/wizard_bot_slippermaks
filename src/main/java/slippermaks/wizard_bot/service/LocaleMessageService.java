@@ -12,16 +12,18 @@ public class LocaleMessageService {
     private final Locale locale;
     private final MessageSource messageSource;
 
-    public LocaleMessageService(@Value("ru-RU") String localeTag, MessageSource messageSource) {
+    public LocaleMessageService(@Value("${localeTag}") String localeTag, MessageSource messageSource) {
         this.messageSource = messageSource;
         this.locale = Locale.forLanguageTag(localeTag);
     }
+
 
     public String getMessage(String message) {
         return messageSource.getMessage(message, null, locale);
     }
 
-    public String getMessage(String message, Object ... args) {
+    public String getMessage(String message, Object... args) {
         return messageSource.getMessage(message, args, locale);
     }
+
 }

@@ -34,12 +34,12 @@ public class BotConfig {
         options.setProxyPort(proxyPort);
         options.setProxyType(proxyType);
 
-        WizardTelegramBot myWizardTelegramBot = new WizardTelegramBot(options, telegramFacade);
-        myWizardTelegramBot.setBotUserName(botUserName);
-        myWizardTelegramBot.setBotToken(botToken);
-        myWizardTelegramBot.setWebHookPath(webHookPath);
+        WizardTelegramBot wizardTelegramBot = new WizardTelegramBot(options, telegramFacade);
+        wizardTelegramBot.setBotUserName(botUserName);
+        wizardTelegramBot.setBotToken(botToken);
+        wizardTelegramBot.setWebHookPath(webHookPath);
 
-        return myWizardTelegramBot;
+        return wizardTelegramBot;
     }
 
     @Bean
