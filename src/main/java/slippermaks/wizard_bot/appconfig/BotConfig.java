@@ -30,9 +30,9 @@ public class BotConfig {
         DefaultBotOptions options = ApiContext
                 .getInstance(DefaultBotOptions.class);
 
-        options.setProxyHost(proxyHost);
-        options.setProxyPort(proxyPort);
-        options.setProxyType(proxyType);
+//        options.setProxyHost(proxyHost);
+//        options.setProxyPort(proxyPort);
+//        options.setProxyType(proxyType);
 
         WizardTelegramBot wizardTelegramBot = new WizardTelegramBot(options, telegramFacade);
         wizardTelegramBot.setBotUserName(botUserName);

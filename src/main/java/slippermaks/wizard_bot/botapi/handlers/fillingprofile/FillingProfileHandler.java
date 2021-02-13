@@ -48,6 +48,7 @@ public class FillingProfileHandler implements InputMessageHandler {
         BotState botState = userDataCache.getUsersCurrentBotState(userId);
 
         SendMessage replyToUser = null;
+        boolean invalidInfo = true;
 
         if (botState.equals(BotState.ASK_NAME)) {
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askName");
@@ -55,16 +56,44 @@ public class FillingProfileHandler implements InputMessageHandler {
         }
 
         if (botState.equals(BotState.ASK_AGE)) {
+            System.out.println("ask age");
             profileData.setName(usersAnswer);
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askAge");
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_GENDER);
+            userDataCache.setUsersCurrentBotState(userId, BotState.INVALID_AGE_NUMB);
         }
 
-        if (botState.equals(BotState.ASK_GENDER)) {
+        if (botState.equals(BotState.INVALID_AGE_NUMB)) {
+            System.out.println("invalid age");
+            if (isNumeric(usersAnswer)) {
+                profileData.setAge(Integer.parseInt(usersAnswer));
+                userDataCache.setUsersCurrentBotState(userId, BotState.ASK_GENDER);
+            } else {
+                replyToUser = messagesService.getReplyMessage(chatId, "reply.numberAgeFormatException");
+                replyToUser = messagesService.getReplyMessage(chatId, "reply.askAge");
+                userDataCache.setUsersCurrentBotState(userId, BotState.INVALID_AGE_NUMB);
+                userDataCache.setUsersCurrentBotState(userId, BotState.VALID_AGE_NUMB);
+            }
+        }
+
+        if (botState.equals(BotState.VALID_AGE_NUMB)) {
+            replyToUser = messagesService.getReplyMessage(chatId, "reply.askAge");
+            userDataCache.setUsersCurrentBotState(userId, BotState.INVALID_AGE_NUMB);
+        }
+
+        if (botState.equals(BotState.VALID_NUMBER_NUMB)) {
             profileData.setAge(Integer.parseInt(usersAnswer));
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askGender");
             replyToUser.setReplyMarkup(getGenderButtonsMarkup());
         }
+
+        if (botState.equals(BotState.ASK_GENDER)) {
+            System.out.println("ask gender");
+
+            replyToUser = messagesService.getReplyMessage(chatId, "reply.askGender");
+            replyToUser.setReplyMarkup(getGenderButtonsMarkup());
+        }
+
+
 
         if (botState.equals(BotState.ASK_NUMBER)) {
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askNumber");
@@ -99,6 +128,17 @@ public class FillingProfileHandler implements InputMessageHandler {
         userDataCache.saveUserProfileData(userId, profileData);
 
         return replyToUser;
+    }
+
+    private boolean isNumeric(String str) {
+        try {
+            Integer.parseInt(str);
+            System.out.println("true");
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.println("false");
+            return false;
+        }
     }
 
     private InlineKeyboardMarkup getGenderButtonsMarkup() {

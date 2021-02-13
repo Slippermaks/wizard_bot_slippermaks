@@ -39,6 +39,10 @@ public class BotStateContext {
             case ASK_MOVIE:
             case ASK_SONG:
             case ASK_COLOR:
+            case INVALID_AGE_NUMB:
+            case INVALID_NUMBER_NUMB:
+            case VALID_AGE_NUMB:
+            case VALID_NUMBER_NUMB:
             case FILLING_PROFILE:
             case PROFILE_FILLED:
                 return true;
